@@ -1,0 +1,19 @@
+
+body{
+    background: whitesmoke;
+    margin: 8px;
+}
+
+#form{
+    padding: 30px;
+    margin: 10px;
+}
+
+.linespace{
+    margin: 5px;
+    margin-left: 0%;
+}
+
+.extraLinespace{
+    size: fixed;
+}

@@ -1,14 +1,12 @@
 package com.maa.ecommerce.exceptions;
 
-import org.springframework.http.HttpStatus;
+public class HandlerException extends java.lang.Exception
+{
 
+    private final String massage;
+    private final int errorCode;
 
-public class NotFoundException extends Exception {
-
-    private String massage;
-    private int errorCode = HttpStatus.NOT_FOUND.value();
-
-    public NotFoundException(int code, String msg){
+    public HandlerException(int code, String msg){
         this.errorCode = code;
         this.massage = msg;
     }

@@ -1,13 +1,14 @@
 package com.maa.ecommerce.models;
 
-public class User {
+public class UserModel
+{
 
-    int id;
-    String name;
-    String email;
-    String username;
-    String password;
-    int roleid;
+    private int id;
+    private String name;
+    private String email;
+    private String username;
+    private String password;
+    private int roleid;
 
     public int getId()
     {

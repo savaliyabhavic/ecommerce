@@ -12,7 +12,3 @@ public class EcommerceApplication
         SpringApplication.run(EcommerceApplication.class, args);
     }
 }
-
-/**
- * Structure Seems Good To me.
- */

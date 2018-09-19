@@ -2,7 +2,7 @@ package com.maa.ecommerce.services;
 
 
 import com.maa.ecommerce.datamanager.UserDataManager;
-import com.maa.ecommerce.models.User;
+import com.maa.ecommerce.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,9 @@ public class UserService
     @Autowired
     UserDataManager userDataManager;
 
-    public User insertUser(User user){
+    public UserModel insertUser(UserModel userModel){
         // Business Logic is here
-        return this.userDataManager.insertUser(user);
+        return this.userDataManager.insertUser(userModel);
     }
 
     public List<Map<String, Object>> getAllUsers()
@@ -26,17 +26,17 @@ public class UserService
         return this.userDataManager.getAllUser();
     }
 
-    public User getOneUser(int id)
+    public UserModel getOneUser(int id)
     {
         return this.userDataManager.getOneUser(id);
     }
 
-    public User updateUser(User user)
+    public UserModel updateUser(UserModel userModel)
     {
-        return this.userDataManager.updateUser(user);
+        return this.userDataManager.updateUser(userModel);
     }
 
-    public User deleteUser(int id)
+    public UserModel deleteUser(int id)
     {
         return this.userDataManager.deleteUser(id);
     }

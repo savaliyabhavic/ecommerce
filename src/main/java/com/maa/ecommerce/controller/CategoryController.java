@@ -43,6 +43,17 @@ public class CategoryController {
         }
     }
 
+    @GetMapping("/{id}/products")
+    public List<Map<String, Object>> getProductsByCategory(@PathVariable int id) throws HandlerException
+    {
+        List<Map<String, Object>> resMaps = this.categoryService.getProductsByCategory(id);
+        if (resMaps == null){
+            throw new HandlerException(HttpStatus.NOT_FOUND.value(), "Result Not Found!");
+        }
+
+        return resMaps;
+    }
+
     @PostMapping
     public CategoryModel addCategory(@RequestBody CategoryModel model) throws HandlerException
     {

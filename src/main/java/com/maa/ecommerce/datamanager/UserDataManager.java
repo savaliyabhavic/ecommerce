@@ -1,7 +1,7 @@
 package com.maa.ecommerce.datamanager;
 
 
-import com.maa.ecommerce.models.User;
+import com.maa.ecommerce.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,10 +18,8 @@ public class UserDataManager
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public User insertUser(User user)
+    public UserModel insertUser(UserModel userModel)
     {
-
-        //TODo update code in a way that end point recieves proper id in the value
         String query = "Insert into user values(NULL, ?, ?, ?, ?, ?)";
 
         try
@@ -31,11 +29,11 @@ public class UserDataManager
             {
                 try (PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS))
                 {
-                    statement.setString(1, user.getName());
-                    statement.setString(2, user.getEmail());
-                    statement.setString(3, user.getUsername());
-                    statement.setString(4, user.getPassword());
-                    statement.setInt(5, user.getRoleid());
+                    statement.setString(1, userModel.getName());
+                    statement.setString(2, userModel.getEmail());
+                    statement.setString(3, userModel.getUsername());
+                    statement.setString(4, userModel.getPassword());
+                    statement.setInt(5, userModel.getRoleid());
 
                     statement.executeUpdate();
                     try (ResultSet generatedKeys = statement.getGeneratedKeys())
@@ -43,43 +41,26 @@ public class UserDataManager
                         if (generatedKeys.next())
                         {
                             int id = generatedKeys.getInt(1);
-                            user.setId(id);
+                            userModel.setId(id);
                         }
                     }
                 }
             }
 
-        /*int update = this.jdbcTemplate.update(query,preparedStatement-> {
-           preparedStatement.setString(1,user.getName());
-           preparedStatement.setString(2,user.getEmail());
-           preparedStatement.setString(3,user.getUsername());
-           preparedStatement.setString(4,user.getPassword());
-           preparedStatement.setInt(5,user.getRoleid());
-        });
-
-        int userId = getIdOfLastAddedRecord(user);
-
-        if (userId == -1){
-            // Throw and Show the Error
-        }
-        */
-            return user;
+            return userModel;
 
         } catch (EmptyResultDataAccessException | SQLException e)
         {
-            e.printStackTrace();
             return null;
         }
     }
 
-    public int getIdOfLastAddedRecord(User user)
+    public int getIdOfLastAddedRecord(UserModel userModel)
     {
         String query = "SELECT id from user where username = ?";
         int id = -1;
-        id = this.jdbcTemplate.queryForObject(query, new Object[]{user.getUsername()}, (resultSet, i) ->
-        {
-            return resultSet.getInt("id");
-        });
+        id = this.jdbcTemplate.queryForObject(query, new Object[]{userModel.getUsername()},
+                (resultSet, i) -> resultSet.getInt("id"));
         return id;
     }
 
@@ -87,12 +68,13 @@ public class UserDataManager
     public List<Map<String, Object>> getAllUser()
     {
         String query = "SELECT id, name, email, username, password, roleid FROM user";
-        List<Map<String, Object>> response = jdbcTemplate.queryForList(query);
+        List<Map<String, Object>> response;
+        response = jdbcTemplate.queryForList(query);
         return response;
     }
 
 
-    public User getOneUser(int id)
+    public UserModel getOneUser(int id)
     {
         String query = "SELECT id, name, email, username, password, roleid FROM user WHERE id = ?";
 
@@ -100,15 +82,15 @@ public class UserDataManager
         {
             return jdbcTemplate.queryForObject(query, new Object[]{id}, ((resultSet, i) ->
             {
-                User user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRoleid(resultSet.getInt("roleid"));
+                UserModel userModel = new UserModel();
+                userModel.setId(resultSet.getInt("id"));
+                userModel.setName(resultSet.getString("name"));
+                userModel.setEmail(resultSet.getString("email"));
+                userModel.setUsername(resultSet.getString("username"));
+                userModel.setPassword(resultSet.getString("password"));
+                userModel.setRoleid(resultSet.getInt("roleid"));
 
-                return user;
+                return userModel;
             }));
         } catch (EmptyResultDataAccessException e)
         {
@@ -117,37 +99,35 @@ public class UserDataManager
 
     }
 
-    public User updateUser(User user)
+    public UserModel updateUser(UserModel userModel)
     {
         String query = "UPDATE user SET name = ? , email = ?, username = ?, password = ?, roleid = ? WHERE id = ?";
 
         int update = this.jdbcTemplate.update(query, preparedStatement ->
         {
 
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getUsername());
-            preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setInt(5, user.getRoleid());
-            preparedStatement.setInt(6, user.getId());
+            preparedStatement.setString(1, userModel.getName());
+            preparedStatement.setString(2, userModel.getEmail());
+            preparedStatement.setString(3, userModel.getUsername());
+            preparedStatement.setString(4, userModel.getPassword());
+            preparedStatement.setInt(5, userModel.getRoleid());
+            preparedStatement.setInt(6, userModel.getId());
 
         });
 
-        return update == 1 ? user : null;
+        return update == 1 ? userModel : null;
 
     }
 
-    public User deleteUser(int id)
+    public UserModel deleteUser(int id)
     {
-        User user = getOneUser(id);
+        UserModel userModel = getOneUser(id);
 
         String query = "DELETE FROM user WHERE id = ?";
 
-        int update = this.jdbcTemplate.update(query, preparedStatement ->
-        {
-            preparedStatement.setInt(1, id);
-        });
+        int update = this.jdbcTemplate.update(query,
+                preparedStatement -> preparedStatement.setInt(1, id));
 
-        return update == 1 ? user : null;
+        return update == 1 ? userModel : null;
     }
 }

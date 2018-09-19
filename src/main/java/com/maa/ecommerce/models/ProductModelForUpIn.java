@@ -1,38 +1,23 @@
 package com.maa.ecommerce.models;
 
-
-
-public class ProductModel {
-
+public class ProductModelForUpIn
+{
     private int  id;
     private String name;
     private String descrption;
     private int qty;
     private int price;
     private int category;
-    private int cid;
 
-    public int getCid()
+    public int getCategory()
     {
-        return cid;
+        return category;
     }
 
-    public void setCid(int cid)
+    public void setCategory(int category)
     {
-        this.cid = cid;
+        this.category = category;
     }
-
-    public String getCname()
-    {
-        return cname;
-    }
-
-    public void setCname(String cname)
-    {
-        this.cname = cname;
-    }
-
-    private String cname;
 
     public int getId()
     {
@@ -82,15 +67,5 @@ public class ProductModel {
     public void setPrice(int price)
     {
         this.price = price;
-    }
-
-    public int getCategory()
-    {
-        return category;
-    }
-
-    public void setCategory(int category)
-    {
-        this.category = category;
     }
 }

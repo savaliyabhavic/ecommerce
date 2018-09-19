@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,51 +20,77 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-
     @Autowired
     UserService userService;
 
-    UserController(){
-        logger.info("Bhavic class to string method is;----- ");
-    }
-
     @PostMapping
-    public UserModel addUser(@RequestBody UserModel userModel){
-        return this.userService.insertUser(userModel);
+    public UserModel addUser(@RequestBody UserModel userModel)
+            throws HandlerException {
+        UserModel result = this.userService.insertUser(userModel);
+        if (result == null){
+            throw new HandlerException(HttpStatus.NOT_ACCEPTABLE.value(),
+                    "Not Added!");
+        }else {
+            return result;
+        }
     }
 
     @GetMapping
-    public List<Map<String, Object>> getUsers(){
-        return this.userService.getAllUsers();
+    public List<Map<String, Object>> getUsers()
+            throws HandlerException {
+
+        List<Map<String, Object>> results = this.userService.getAllUsers();
+        if (results.isEmpty()){
+            throw new HandlerException(HttpStatus.NOT_FOUND.value(),
+                    "Not Found!");
+        }else {
+            return results;
+        }
+
     }
 
     @GetMapping("/{id}")
-    UserModel getOneUser(@PathVariable int id, HttpServletResponse response) throws HandlerException
-    {
+    UserModel getOneUser(@PathVariable int id, HttpServletResponse response)
+            throws HandlerException {
         UserModel u = this.userService.getOneUser(id);
 
         if (u == null){
-            throw new HandlerException(HttpStatus.NOT_FOUND.value(), "UserModel Not Found Please Enter Valid");
+            throw new HandlerException(HttpStatus.NOT_FOUND.value(),
+                    "UserModel Not Found Please Enter Valid");
         }else {
             return u;
         }
 
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(HandlerException.class)
-    public ErrorDetails userNotFound(HandlerException e){
-        return e.getErrorDetails();
-    }
-
     @PutMapping
-    UserModel updateUser(@RequestBody UserModel userModel){
-        return this.userService.updateUser(userModel);
+    UserModel updateUser(@RequestBody UserModel userModel)
+            throws HandlerException {
+
+        UserModel result = this.userService.updateUser(userModel);
+
+        if (result == null){
+            throw new HandlerException(HttpStatus.NOT_ACCEPTABLE.value(),
+                    "Please Enter Valid Data");
+        }else {
+            return result;
+        }
     }
 
     @DeleteMapping("/{id}")
-    UserModel deleteUser(@PathVariable int id){
-        return this.userService.deleteUser(id);
+    UserModel deleteUser(@PathVariable int id) throws HandlerException {
+        UserModel res = this.userService.deleteUser(id);
+
+        if (res == null)
+            throw new HandlerException(HttpStatus.NOT_ACCEPTABLE.value(), "Not Deleted");
+        else
+            return res;
+
+    }
+
+    @ExceptionHandler(HandlerException.class)
+    public ErrorDetails userNotFound(HandlerException e){
+        return e.getErrorDetails();
     }
 
 }

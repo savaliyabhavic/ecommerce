@@ -3,6 +3,7 @@ package com.maa.ecommerce.controller;
 
 import com.maa.ecommerce.exceptions.ErrorDetails;
 import com.maa.ecommerce.exceptions.HandlerException;
+import com.maa.ecommerce.models.ProductModelForUpIn;
 import com.maa.ecommerce.models.ProductModel;
 import com.maa.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,28 +45,27 @@ public class ProductController {
         }
     }
 
-
     @PostMapping
-    public ProductModel addProduct(@RequestBody ProductModel model) throws HandlerException
+    public ProductModel addProduct(@RequestBody ProductModelForUpIn model) throws HandlerException
     {
-        ProductModel res = this.productService.addProduct(model);
+        ProductModelForUpIn res = this.productService.addProduct(model);
 
         if (res == null){
             throw new HandlerException(HttpStatus.NOT_ACCEPTABLE.value(), "Not Added!");
         }else {
-            return res;
+            return getProduct(res.getId());
         }
     }
 
 
     @PutMapping
-    public ProductModel updateProduct(@RequestBody ProductModel model) throws HandlerException
+    public ProductModel updateProduct(@RequestBody ProductModelForUpIn model) throws HandlerException
     {
-        ProductModel res = this.productService.updateProduct(model);
+        ProductModelForUpIn res = this.productService.updateProduct(model);
         if (res == null){
             throw  new HandlerException(HttpStatus.NOT_ACCEPTABLE.value(), "Not Updated!");
         }else {
-            return res;
+            return getProduct(res.getId());
         }
     }
 
@@ -80,7 +80,6 @@ public class ProductController {
             return res;
         }
     }
-
 
     @ExceptionHandler(HandlerException.class)
     public ErrorDetails handleException(HandlerException e) {
