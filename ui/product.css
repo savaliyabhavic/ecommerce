@@ -1,6 +1,5 @@
 
 body{
-    background: whitesmoke;
     margin: 8px;
 }
 
@@ -16,4 +15,43 @@ body{
 
 .extraLinespace{
     size: fixed;
+}
+
+
+.productListUl{
+    list-style: none;
+}
+
+.productList{
+    margin-left: 15%;
+    margin-top: 30px;
+    margin-right: 15%;
+}
+
+.productItem{
+    margin-bottom: 20px;
+    background: white solid;
+    height: 200px;
+    width: 100%;
+    border: 1px solid gray;
+}
+
+.productTileView{
+    float: left;
+    width: 25%;
+    height: 100%;
+    border-right: 1px solid gray;
+}
+
+.productName{
+    text-align: center;
+    padding: 10px 10px 10px 10px;
+    word-wrap: break-word;
+    margin-top: 60px;
+}
+
+.productDetilsView{
+    float: left;
+    padding: 20px;
+    width: 70%;
 }
