@@ -42,4 +42,8 @@ public class ProductService {
     {
         return this.productDataManger.removeProduct(id);
     }
+
+    public List<Map<String, Object>> searchProduct(String name) {
+        return this.productDataManger.searchProduct(name);
+    }
 }

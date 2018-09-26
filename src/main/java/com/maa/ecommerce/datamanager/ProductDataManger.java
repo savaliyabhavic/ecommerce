@@ -142,4 +142,11 @@ public class ProductDataManger
             return null;
         }
     }
+
+    public List<Map<String, Object>> searchProduct(String name) {
+        String query = "SELECT id, name, descrption, qty, price, category FROM ecommerce.product WHERE name like ?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(query, "%" + name + "%");
+
+        return list;
+    }
 }

@@ -33,6 +33,19 @@ public class ProductController {
         }
     }
 
+    @GetMapping(value = "/search")
+    public @ResponseBody
+    List<Map<String, Object>> searchProduct(@RequestParam("name") String name) throws HandlerException {
+        List<Map<String, Object>> res = this.productService.searchProduct(name);
+
+        if (res.isEmpty()){
+            throw new HandlerException(HttpStatus.NOT_FOUND.value(), "Not Found!");
+        }else {
+            return res;
+        }
+
+    }
+
     @GetMapping("/{id}")
     public ProductModel getProduct(@PathVariable int id) throws HandlerException
     {
@@ -80,6 +93,8 @@ public class ProductController {
             return res;
         }
     }
+
+
 
     @ExceptionHandler(HandlerException.class)
     public ErrorDetails handleException(HandlerException e) {
